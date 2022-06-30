@@ -1,34 +1,17 @@
 ---
-- name: Install Clickhouse
-  hosts: clickhouse
-  handlers:
-    - name: Start clickhouse service
-      become: true
-      ansible.builtin.service:
-        name: clickhouse-server
-        state: restarted
+- name: Install vector
+  hosts: vector-01
   tasks:
     - block:
-        - name: Get clickhouse distrib
+        - name: Get vector distrib
           ansible.builtin.get_url:
-            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
-            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
-          with_items: "{{ clickhouse_packages }}"
-      rescue:
-        - name: Get clickhouse distrib
-          ansible.builtin.get_url:
-            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
-            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
-    - name: Install clickhouse packages
+            url: "https://packages.timber.io/vector/{{vector_version}}/{{ item }}-{{ vector_version }}-1.x86_64.rpm"
+            dest: "./{{ item }}-{{ vector_version }}.rpm"
+          with_items: "{{ vector_packages }}"
+          # https://packages.timber.io/vector/0.22.3/vector-0.22.3-1.x86_64.rpm
+    - name: Install vector package
       become: true
       ansible.builtin.yum:
         name:
-          - clickhouse-common-static-{{ clickhouse_version }}.rpm
-          - clickhouse-client-{{ clickhouse_version }}.rpm
-          - clickhouse-server-{{ clickhouse_version }}.rpm
-      notify: Start clickhouse service
-    - name: Create database
-      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
-      register: create_db
-      failed_when: create_db.rc != 0 and create_db.rc !=82
-      changed_when: create_db.rc == 0
+          - vector-{{ vector_version }}.rpm
+      notify: Start vector service

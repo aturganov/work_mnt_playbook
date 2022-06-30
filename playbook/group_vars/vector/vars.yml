@@ -1,0 +1,6 @@
+---
+vector_version: "0.22.3"
+vector_packages:
+  - vector
+
+  # https://packages.timber.io/vector/0.22.3/vector-0.22.3-1.x86_64.rpm
