@@ -19,14 +19,15 @@
       ansible.builtin.yum:
         name: nginx
         state: present
-      notify: start-nginx
+      notify: start nginx
     - name: NGINX | Create general config
       become: true
       template:
         src: templates/nginx.conf.j2
         dest: /etc/nginx/nginx.conf
         mode: 0644
-      notify: reload-nginx     
+      # notify: reload-nginx
+      notify: restart nginx     
 - name: Install lighthouse
   hosts: lighthouse
   handlers:
@@ -51,7 +52,7 @@
         src: lighthouse.conf.j2
         dest: /etc/nginx/conf.d/default.conf
         mode: 0644
-      notify: reload-nginx
+      notify: restart nginx
 - name: Install Clickhouse
   hosts: clickhouse
   handlers:
@@ -103,7 +104,7 @@
       ansible.builtin.yum:
         name:
           - vector-{{ vector_version }}.rpm
-      notify: Start vector service
+      notify: start vector.service
     - name: Vector | Template config    
       ansible.builtin.template:
         src: vector.yml.j2
@@ -111,8 +112,9 @@
         mode: "0644"
         owner: "{{ ansible_user_id }}"
         group: "{{ ansible_user_gid }}"
-        validate: vector validate --no-enviroment --yaml-config %s
+        # validate: vector validate --no-environment --config-yaml %s
     - name: vector | create unit
+      become: true
       ansible.builtin.template:
         src: vector.service.j2
         dest: /etc/systemd/system/vector.service
@@ -121,10 +123,9 @@
         group: "{{ ansible_user_gid }}"
     - name: vector | start sevice
       ansible.builtin.systemd:
-        become: true
         name: vector
         state: started
-        deamon_reload: true 
+        # daemon_reload: true 
 
 
 
