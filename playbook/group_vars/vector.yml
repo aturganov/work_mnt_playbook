@@ -1,0 +1,28 @@
+---
+vector_url: https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm
+vector_version: "0.22.3"
+vector_packages:
+  - vector
+vector_config:
+  sources:
+    our_log:
+    type: file
+    acknowledgements: null
+    ignore_older_secs: 600
+    include: 
+      - /home/locadm/logs/*.log
+    read_from: beginning
+  transforms:
+  sinks:
+    to_clickhouse: 
+      inputs:
+        - out_log
+      database: custom
+      endpoint: http://62.84.120.180:8123
+      table: my_table
+      acknowledgements: null
+      compression: gzip
+      encoding: null
+      healhcheck: null
+      skip_unknown_fields: null
+
