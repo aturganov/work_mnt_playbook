@@ -1,0 +1,4 @@
+---
+- name: Add clickhouse role
+  hosts: clickhouse
+  roles: ansible-clickhouse
