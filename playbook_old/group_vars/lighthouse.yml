@@ -1,4 +1,0 @@
-lighthouse_vsc: http://github.com/VKCOM/Lighthouse.git
-lighthouse_location_dir: /home/locadm/Lighthouse
-lighthouse_access_log_name: lighthouse_access
-nginx_user_name: root

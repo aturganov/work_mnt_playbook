@@ -1,4 +1,15 @@
 ---
-- name: Add clickhouse role
-  hosts: clickhouse
-  roles: ansible-clickhouse
+- name: Add vector role
+  hosts: vector-01
+  roles: 
+    - vector-role
+
+- name: Install NGINX & Lighthouse
+  hosts: lighthouse-01    
+  roles:
+    - lighthouse-role
+
+- name: Install Clickhouse
+  hosts: clickhouse-01    
+  roles:
+    - ansible-clickhouse
