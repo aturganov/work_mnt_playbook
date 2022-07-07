@@ -4,12 +4,12 @@
   roles: 
     - vector-role
 
-- name: Install NGINX & Lighthouse
-  hosts: lighthouse-01    
-  roles:
-    - lighthouse-role
+# - name: Install NGINX & Lighthouse
+#   hosts: lighthouse-01    
+#   roles:
+#     - lighthouse-role
 
-- name: Install Clickhouse
-  hosts: clickhouse-01    
-  roles:
-    - ansible-clickhouse
+# - name: Install Clickhouse
+#   hosts: clickhouse-01    
+#   roles:
+#     - ansible-clickhouse
